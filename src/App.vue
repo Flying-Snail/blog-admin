@@ -2,21 +2,18 @@
   <div id="app">
     <Header></Header>
     <Container></Container>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
 import Container from './components/Container'
-import Footer from './components/Footer'
 
 export default {
   name: 'app',
   components: {
     Header,
     Container,
-    Footer
   },
   created () {
     document.title = '我的个人博客'

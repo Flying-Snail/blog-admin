@@ -50,13 +50,12 @@ export default {
       console.log(key, keyPath);
     },
     handleSelect(index, indexPath) {
-      console.log(index, indexPath)
       switch (indexPath[0]) {
         case '1':
           this.$router.push('introduce')
           break
         case '2':
-          this.$router.push('posts')
+          index === '2-1' ? this.$router.push('posts') : this.$router.push('creatPost')
           break
         case '3':
           this.$router.push('pages')
@@ -73,6 +72,7 @@ export default {
   flex-shrink 0
   width 200px
   height 100%
+  text-align left
   .el-menu-vertical-demo
     width 100%
     height 100%
