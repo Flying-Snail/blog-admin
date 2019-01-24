@@ -4,7 +4,7 @@
       <el-form-item label="标题" prop="title" label-width="80px">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
-      <mavon-editor ref="md" v-model="value" @imgAdd="$imgAdd" @imgDel="$imgDel" class="editor"/>
+      <mavon-editor ref="md" v-model="value" @imgAdd="$imgAdd" @imgDel="$imgDel" @fullScreen="$fullScreen" :class="{ editor : !isEditerFullScreen }" />
       <el-form-item class="switch-area">
         <span>是否置顶</span>
         <el-switch v-model="form.is_top" class="item-switch"></el-switch>
@@ -48,15 +48,38 @@ export default {
         }, ]
       },
       value: '',
-      images: {}
+      images: {},
+      isEditerFullScreen: false
     }
+  },
+  created() {
+    const id = this.$route.query.id
+    if (id) {
+      this.$http.get(`${posts_url}/${id}/edit`)
+        .then(res => {
+          const { title, is_top, labels, content, _id } = res.data
+          this.isUpdate = true
+          this.postId = _id
+          this.form = Object.assign({}, this.form, {
+            title,
+            is_top,
+            labels
+          })
+          this.value = content
+        })
+    }
+  },
+  mounted() {
+    this.$refs.md.$refs.toolbar_left.img_file = []
   },
   methods: {
     onSubmit() {
       this.isUpdate ? this.updatePost() : this.createPost()
     },
     createPost() {
-      this.$http.post(posts_url, Object.assign({}, this.form, {content: this.value}))
+      this.$http.post(posts_url, Object.assign({}, this.form, {
+          content: this.value
+        }))
         .then(() => {
           this.$message({
             message: '提交成功',
@@ -68,7 +91,9 @@ export default {
         })
     },
     updatePost() {
-      this.$http.put(`${posts_url}/${this.postId}`, Object.assign({}, this.form, {content: this.value}))
+      this.$http.put(`${posts_url}/${this.postId}`, Object.assign({}, this.form, {
+          content: this.value
+        }))
         .then(() => {
           this.$message({
             message: '提交成功',
@@ -143,24 +168,10 @@ export default {
             console.log('delete error', error)
           })
       }
+    },
+    $fullScreen(status) {
+      this.isEditerFullScreen = status
     }
-  },
-  created() {
-    const id = this.$route.query.id
-    console.log(id)
-    if (id) {
-      this.$http.get(`${posts_url}/${id}/edit`)
-        .then(res => {
-          const {title, is_top, labels, content, _id} = res.data
-          this.isUpdate = true
-          this.postId = _id
-          this.form = Object.assign({}, this.form, {title, is_top, labels})
-          this.value = content
-        })
-    }
-  },
-  mounted() {
-    this.$refs.md.$refs.toolbar_left.img_file = []
   }
 }
 </script>
