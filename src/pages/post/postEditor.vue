@@ -4,7 +4,7 @@
       <el-form-item label="标题" prop="title" label-width="80px">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
-      <mavon-editor ref="md" v-model="value" @imgAdd="$imgAdd" @imgDel="$imgDel" @fullScreen="$fullScreen" :class="{ editor : !isEditerFullScreen }" />
+      <mavon-editor ref="md" v-model="value" @imgAdd="$imgAdd" @imgDel="$imgDel" @fullScreen="$fullScreen" :class="{ editor : !isEditorFullScreen }" />
       <el-form-item class="switch-area">
         <span>是否置顶</span>
         <el-switch v-model="form.is_top" class="item-switch"></el-switch>
@@ -49,7 +49,7 @@ export default {
       },
       value: '',
       images: {},
-      isEditerFullScreen: false
+      isEditorFullScreen: false
     }
   },
   created() {
@@ -170,7 +170,7 @@ export default {
       }
     },
     $fullScreen(status) {
-      this.isEditerFullScreen = status
+      this.isEditorFullScreen = status
     }
   }
 }

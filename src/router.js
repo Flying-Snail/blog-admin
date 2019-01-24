@@ -2,7 +2,7 @@ import VueRouter from "vue-router"
 import Introduce from "./pages/Introduce"
 import Pages from './pages/Pages'
 import PostList from './pages/post/postList'
-import PostEditer from './pages/post/postEditer'
+import PostEditor from './pages/post/postEditor'
 import Preview from './pages/post/preview'
 
 export default new VueRouter({
@@ -29,14 +29,14 @@ export default new VueRouter({
     },
     {
       path: '/creat',
-      component: PostEditer,
+      component: PostEditor,
       meta: {
         keepAlive: true
       }
     },
     {
       path: '/update',
-      component: PostEditer,
+      component: PostEditor,
       meta: {
         keepAlive: false
       }
