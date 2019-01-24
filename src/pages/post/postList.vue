@@ -1,36 +1,36 @@
 <template>
   <div class="main">
-    <el-table :data="postList" style="width: 100%">
+    <el-table :data="postList" style="width: 100%" :row-class-name="tableRowClassName">
       <el-table-column type="index" width="50">
       </el-table-column>
-      <el-table-column label="标题" width="360">
+      <el-table-column label="标题" width="280" align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="上次修改时间" width="180">
+      <el-table-column label="上次修改时间" width="150" align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ formatDate(scope.row.updated_at) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="点赞数" width="100">
+      <el-table-column label="点赞数" width="100" align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.like_num }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="评论数" width="100">
+      <el-table-column label="评论数" width="100" align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.comment_num }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="作者" width="100">
+      <el-table-column label="作者" width="100" align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.author }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+          <el-button size="mini" @click="handleSee(scope.$index, scope.row)">查看</el-button>
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-import config from "../config"
+import {posts_url} from "../../config"
 export default {
   data () {
     return {
@@ -60,11 +60,21 @@ export default {
     this.updataData(this.page)
   },
   methods: {
+    tableRowClassName({row}) {
+      if (row.is_top) return 'top-row'
+      return ''
+    },
+    handleSee(index, row) {
+      this.$router.push({
+        path: 'preview',
+        query: {id: row._id}
+      })
+    },
     handleEdit(index, row) {
-      console.log(index, row)
+      this.$router.push({path: 'update', query:{id: row._id}})
     },
     handleDelete(index, row) {
-      this.$http.delete(config.base_url + '/posts/' + row._id)
+      this.$http.delete(posts_url + '/' + row._id)
         .then(rep => this.updataData(this.page))
     },
     handleToNext() {
@@ -74,7 +84,7 @@ export default {
       this.updataData(this.page - 1)
     },
     updataData(page) {
-      this.$http.get(config.base_url + '/posts?page=' + page)
+      this.$http.get(posts_url + '?page=' + page)
         .then(rep => {
           const data = rep.data
           this.total = data.total
@@ -103,6 +113,8 @@ export default {
   position relative
   width 100%
   display block
+  /deep/ .el-table .top-row
+    background: #f0f9eb
   .tool
     position absolute
     display flex

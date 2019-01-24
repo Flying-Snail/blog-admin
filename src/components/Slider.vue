@@ -55,7 +55,7 @@ export default {
           this.$router.push('introduce')
           break
         case '2':
-          index === '2-1' ? this.$router.push('posts') : this.$router.push('creatPost')
+          index === '2-1' ? this.$router.push('postList') : this.$router.push('creat')
           break
         case '3':
           this.$router.push('pages')

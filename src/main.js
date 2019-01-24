@@ -5,9 +5,12 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import router from "./router"
 import Axios from 'axios'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
+Vue.use(mavonEditor)
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios
 
