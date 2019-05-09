@@ -4,12 +4,14 @@ if (process.env.NODE_ENV === 'development') {
   base_url = 'http://127.0.0.1:3333'
   asset_url = '/Applications/myP/adnois-blog/resources'
 }
-let posts_url = base_url + '/admin/api/posts'
-let image_url = base_url + '/admin/upload/image'
+const posts_url = base_url + '/admin/api/posts'
+const labels_url = base_url + '/admin/api/labels'
+const image_url = base_url + '/admin/upload/image'
 
 export {
   base_url,
   asset_url,
   posts_url,
-  image_url
+  labels_url,
+  image_url,
 }

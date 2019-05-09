@@ -11,19 +11,19 @@
     "vue": "^2.5.21"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.3.0",
-    "@vue/cli-plugin-eslint": "^3.3.0",
-    "@vue/cli-service": "^3.3.0",
+    "@vue/cli-plugin-babel": "^3.6.0",
+    "@vue/cli-plugin-eslint": "^3.6.0",
+    "@vue/cli-service": "^3.6.0",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
-    "element-ui": "^2.4.11",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0",
+    "element-ui": "^2.8.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.2",
     "mavon-editor": "^2.6.17",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-router": "^3.0.2",
-    "vue-template-compiler": "^2.5.21"
+    "vue-router": "^3.0.6",
+    "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
     "root": true,
@@ -34,7 +34,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": "warn"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

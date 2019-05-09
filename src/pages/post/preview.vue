@@ -1,6 +1,7 @@
 <template>
   <div class="preview">
-    <mavon-editor ref="md" v-model="value" :toolbarsFlag="toolbarsFlag" :defaultOpen="defaultOpen" :subfield="subfield"
+    <mavon-editor ref="md" v-model="value" :toolbarsFlag="toolbarsFlag"
+      :defaultOpen="defaultOpen" :subfield="subfield"
       :editable="editable" class="preview"/>
   </div>
 </template>
@@ -19,11 +20,10 @@ export default {
   created() {
     this.$http.get(`${posts_url}/${this.$route.query.id}`)
       .then((rep) => {
-        console.log(rep)
         const result = rep.data
         this.value = result.content
       }).catch((err) => {
-        
+        console.log(err)
       })
   }
 }

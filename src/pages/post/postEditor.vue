@@ -36,7 +36,6 @@ export default {
       isUpdate: false,
       form: {
         title: '',
-        author: '不语',
         is_top: false,
         labels: [],
       },
@@ -107,7 +106,6 @@ export default {
     initData() {
       this.form = {
         title: '',
-        author: '不语',
         is_top: false,
         labels: [],
       }
@@ -118,8 +116,6 @@ export default {
       this.$refs.md.$refs.toolbar_left.img_file = []
     },
     $imgAdd(pos, $file) {
-      console.log('image add...')
-
       const imgData = new FormData()
       imgData.append('image', $file)
       const name = $file._name
@@ -142,18 +138,17 @@ export default {
           message: '上传成功',
           type: 'success'
         })
-        console.log(this.$refs.md.$refs.toolbar_left.img_file)
       }).catch((error) => {
         this.$message.error('上传失败')
-        console.log('image upload error', error)
         // 临时解决方案
         this.$refs.md.$refs.toolbar_left.$imgDel(pos)
+        // eslint-disable-next-line
+        console.log(error)
       })
     },
     $imgDel(file) {
       const my_file = this.images[file[0]._name]
       if (my_file) {
-        console.log('delete file: ', my_file.file_name)
 
         this.$http.delete(image_url + '/' + my_file._id)
           .then(() => {
@@ -165,7 +160,8 @@ export default {
           })
           .catch((error) => {
             this.$message.error('删除失败')
-            console.log('delete error', error)
+            // eslint-disable-next-line
+            console.log(error)
           })
       }
     },

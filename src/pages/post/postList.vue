@@ -1,59 +1,47 @@
 <template>
   <div class="main">
     <el-table :data="postList" style="width: 100%" :row-class-name="tableRowClassName">
+      <el-table-column type="index" width="50"></el-table-column>
+      <el-table-column label="标题" width="280" align="center" prop="title"></el-table-column>
+      <el-table-column label="上次修改时间" width="150" align="center" prop="updated_at"></el-table-column>
+      <el-table-column label="点赞数" width="100" align="center" prop="like_num"></el-table-column>
+      <el-table-column label="评论数" width="100" align="center" prop="comment_num"></el-table-column>
+
+      <el-table-column label="操作" align="center" v-slot="{$index, row}">
       <el-table-column type="index" width="50">
-      </el-table-column>
-      <el-table-column label="标题" width="280" align="center">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.title }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="上次修改时间" width="150" align="center">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ formatDate(scope.row.updated_at) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="点赞数" width="100" align="center">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.like_num }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="评论数" width="100" align="center">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.comment_num }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="作者" width="100" align="center">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleSee(scope.$index, scope.row)">查看</el-button>
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
+        <el-button size="mini" @click="handleSee($index, row)">查看</el-button>
+        <el-button size="mini" @click="handleEdit($index, row)">编辑</el-button>
+        <el-button size="mini" type="danger" @click="handleDelete($index, row)">删除</el-button>
       </el-table-column>
     </el-table>
     <div class="tool">
-      <p>当前第{{page}}页，共{{lastPage}}页</p>
+      <p>{{labelPosts}}</p>
+      <!-- <p>当前第{{page}}页，共{{lastPage}}页</p> -->
       <el-button-group>
         <el-button type="primary" icon="el-icon-arrow-left" :disabled="isPrevDisable" @click="handleToPrev">上一页</el-button>
-        <el-button type="primary" :disabled="isNextDisable" @click="handleToNext">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+        <el-button type="primary" :disabled="isNextDisable" @click="handleToNext">
+          下一页
+          <i class="el-icon-arrow-right el-icon--right"></i>
+        </el-button>
       </el-button-group>
     </div>
   </div>
 </template>
 <script>
-import {posts_url} from "../../config"
+import { posts_url, labels_url } from "../../config"
 export default {
+  props: ['labelPosts'],
   data () {
     return {
       total: 0,
       page: 1,
       lastPage: 1,
       postList: []
+    }
+  },
+  watch: {
+    '$route' () {
+      this.updataData(1)
     }
   },
   created () {
@@ -65,35 +53,45 @@ export default {
       return ''
     },
     handleSee(index, row) {
+
+    handleSee (index, row) {
       this.$router.push({
         path: 'preview',
         query: {id: row._id}
       })
     },
-    handleEdit(index, row) {
+    handleEdit (index, row) {
       this.$router.push({path: 'update', query:{id: row._id}})
     },
-    handleDelete(index, row) {
+    handleDelete (index, row) {
       this.$http.delete(posts_url + '/' + row._id)
-        .then(rep => this.updataData(this.page))
+        .then(() => this.updataData(this.page))
     },
-    handleToNext() {
+    handleToNext () {
       this.updataData(this.page + 1)
     },
-    handleToPrev() {
+    handleToPrev () {
       this.updataData(this.page - 1)
     },
-    updataData(page) {
-      this.$http.get(posts_url + '?page=' + page)
+    updataData (page) {
+      const url = this.$route.query.labelId
+        ? posts_url + '?page=' + page + '&label_id=' + this.$route.query.labelId
+        : posts_url + '?page=' + page
+
+      this.$http.get(url)
         .then(rep => {
           const data = rep.data
           this.total = data.total
           this.page = parseInt(data.page)
           this.lastPage = data.lastPage
-          this.postList = data.data
+          this.postList = data.data.map((row) => {
+            return Object.assign({}, row, {
+              updated_at: this.formatDate(row.updated_at)
+            })
+          })
         })
     },
-    formatDate(date) {
+    formatDate (date) {
       const time = new Date(date)
       return time.getFullYear() + '年' + (time.getMonth() + 1) + '月' + time.getDate() + '日'
     }
