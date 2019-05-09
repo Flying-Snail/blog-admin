@@ -8,7 +8,7 @@
       <el-table-column label="评论数" width="100" align="center" prop="comment_num"></el-table-column>
 
       <el-table-column label="操作" align="center" v-slot="{$index, row}">
-      <el-table-column type="index" width="50">
+        <el-button size="mini" @click="handleRelease($index, row, !row.is_released)">{{ row.is_released ? '下架' : '发布' }}</el-button>
         <el-button size="mini" @click="handleSee($index, row)">查看</el-button>
         <el-button size="mini" @click="handleEdit($index, row)">编辑</el-button>
         <el-button size="mini" type="danger" @click="handleDelete($index, row)">删除</el-button>
@@ -52,7 +52,16 @@ export default {
       if (row.is_top) return 'top-row'
       return ''
     },
-    handleSee(index, row) {
+
+    handleRelease($index, row, value) {
+      const originPostData = this.postList[$index]
+      const nowPostData = Object.assign({}, originPostData, { is_released: value })
+      const url = posts_url + '/' + row._id
+
+      this.$http.put(url, nowPostData).then(() => {
+        this.postList.splice($index, 1, nowPostData)
+      })
+    },
 
     handleSee (index, row) {
       this.$router.push({
@@ -60,19 +69,24 @@ export default {
         query: {id: row._id}
       })
     },
+
     handleEdit (index, row) {
       this.$router.push({path: 'update', query:{id: row._id}})
     },
+
     handleDelete (index, row) {
       this.$http.delete(posts_url + '/' + row._id)
         .then(() => this.updataData(this.page))
     },
+
     handleToNext () {
       this.updataData(this.page + 1)
     },
+
     handleToPrev () {
       this.updataData(this.page - 1)
     },
+
     updataData (page) {
       const url = this.$route.query.labelId
         ? posts_url + '?page=' + page + '&label_id=' + this.$route.query.labelId
@@ -91,11 +105,13 @@ export default {
           })
         })
     },
+  
     formatDate (date) {
       const time = new Date(date)
       return time.getFullYear() + '年' + (time.getMonth() + 1) + '月' + time.getDate() + '日'
     }
   },
+
   computed: {
     isPrevDisable () {
       return !(this.page > 1)
