@@ -1,6 +1,5 @@
 <template>
-  <div class="main">
-    <Slider v-show="sliderShow"></Slider>
+  <div class="container">
 
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive">
@@ -11,26 +10,22 @@
     <router-view v-if="!$route.meta.keepAlive">
       <!-- 这里是不被缓存的视图组件 -->
     </router-view>
-
   </div>
 </template>
+
 <script>
-import Slider from "./Slider";
+
 export default {
   data() {
     return {
-      sliderShow: true
+      title: '哈哈哈',
     }
-  },
-  components: {
-    Slider
   }
 }
 </script>
+
 <style lang="stylus" scoped>
-.main
-  display flex
+.container
   width 100%
   height 100%
 </style>
-

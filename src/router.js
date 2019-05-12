@@ -1,58 +1,81 @@
 import VueRouter from "vue-router"
 import Introduce from "./pages/Introduce"
-import Pages from './pages/Pages'
+import UserList from './pages/UserList'
 import PostList from './pages/post/postList'
 import PostEditor from './pages/post/postEditor'
 import Preview from './pages/post/preview'
+import Login from './pages/Login'
+import Admin from './pages/Admin'
 
 export default new VueRouter({
-  routes: [{
+  routes: [
+    {
       path: '/',
-      component: Introduce,
-      meta: {
-        keepAlive: false
-      }
+      component: Admin,
+      children: [
+        {
+          path: '/',
+          component: Introduce,
+          meta: {
+            needLogin: true,
+            keepAlive: false,
+          }
+        },
+        {
+          path: '/introduce',
+          component: Introduce,
+          meta: {
+            needLogin: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/postList',
+          component: PostList,
+          meta: {
+            needLogin: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/creat',
+          component: PostEditor,
+          meta: {
+            needLogin: true,
+            keepAlive: true
+          }
+        },
+        {
+          path: '/update',
+          component: PostEditor,
+          meta: {
+            needLogin: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/preview',
+          component: Preview,
+          meta: {
+            needLogin: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/userList',
+          component: UserList,
+          meta: {
+            needLogin: true,
+            keepAlive: false
+          }
+        },
+      ],
     },
     {
-      path: '/introduce',
-      component: Introduce,
+      path: '/login',
+      component: Login,
       meta: {
-        keepAlive: false
-      }
-    },
-    {
-      path: '/postList',
-      component: PostList,
-      meta: {
-        keepAlive: false
-      }
-    },
-    {
-      path: '/creat',
-      component: PostEditor,
-      meta: {
-        keepAlive: true
-      }
-    },
-    {
-      path: '/update',
-      component: PostEditor,
-      meta: {
-        keepAlive: false
-      }
-    },
-    {
-      path: '/preview',
-      component: Preview,
-      meta: {
-        keepAlive: false
-      }
-    },
-    {
-      path: '/pages',
-      component: Pages,
-      meta: {
-        keepAlive: false
+        needLogin: false,
       }
     },
   ]

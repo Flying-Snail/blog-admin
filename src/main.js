@@ -14,6 +14,21 @@ Vue.use(mavonEditor)
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios
 
+router.beforeEach((to, from, next) => {
+  if (!to.meta.needLogin) return next()
+
+  let token = window.localStorage.getItem('token')
+  if (token) return next()
+
+  next({
+    path: '/login',
+    query: { redirect: to.fullPath }
+  })
+})
+
+const instance = Axios.create()
+instance.defaults.headers.common['Authorization'] = window.localStorage.getItem('token')
+
 new Vue({
   render: h => h(App),
   router,

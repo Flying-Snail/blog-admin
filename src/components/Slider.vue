@@ -28,6 +28,11 @@
         </el-menu-item>
       </el-submenu>
 
+      <el-menu-item index="4">
+        <i class="el-icon-setting"></i>
+        <span slot="title">用户管理</span>
+      </el-menu-item>
+
     </el-menu>
   </div>
 </template>
@@ -41,7 +46,6 @@ export default {
   },
   created() {
     this.$http.get(labels_url).then(rep => {
-      console.log(rep)
       this.labels = rep.data
     })
   },
@@ -59,6 +63,9 @@ export default {
           break
         case '2':
           index === '2-1' ? this.$router.push('postList') : this.$router.push('creat')
+          break
+        case '4':
+          this.$router.push('userList')
           break
         default:
           break
@@ -79,5 +86,6 @@ export default {
   .el-menu-vertical-demo
     width 100%
     height 100%
+    border none
 </style>
 
