@@ -48,6 +48,7 @@ export default {
   align-items center
   height 100%
   width 100%
+  background-image url("../assets/WechatIMG1.jpeg")
   
   .login-area
     display flex

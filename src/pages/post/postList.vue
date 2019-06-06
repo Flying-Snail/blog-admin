@@ -77,8 +77,23 @@ export default {
     },
 
     handleDelete (index, row) {
-      this.$http.delete(posts_url + '/' + row._id)
-        .then(() => this.updataData(this.page))
+      this.$confirm('此操作将删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.delete(posts_url + '/' + row._id).then(() => this.updataData(this.page))
+
+        this.$message({
+          type: 'success',
+          message: '操作成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作取消'
+        })
+      })
     },
 
     handleToNext () {

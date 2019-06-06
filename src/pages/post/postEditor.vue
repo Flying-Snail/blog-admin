@@ -12,7 +12,8 @@
           <el-checkbox label="JavaScript" name="type"></el-checkbox>
           <el-checkbox label="HTML" name="type"></el-checkbox>
           <el-checkbox label="CSS" name="type"></el-checkbox>
-          <el-checkbox label="设计" name="type"></el-checkbox>
+          <el-checkbox label="工具" name="type"></el-checkbox>
+          <el-checkbox label="其他" name="type"></el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item>
@@ -68,9 +69,6 @@ export default {
         })
     }
   },
-  mounted() {
-    this.$refs.md.$refs.toolbar_left.img_file = []
-  },
   methods: {
     onSubmit() {
       this.isUpdate ? this.updatePost() : this.createPost()
@@ -112,8 +110,30 @@ export default {
       this.value = ''
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields()
-      this.$refs.md.$refs.toolbar_left.img_file = []
+      this.$confirm('此操作将重置该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.form = {
+          title: '',
+          is_top: false,
+          labels: [],
+        }
+        this.value = ''
+        this.$refs[formName].resetFields()
+        this.$refs.md.$refs.toolbar_left.img_file = []
+
+        this.$message({
+          type: 'success',
+          message: '操作成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作取消'
+        })
+      })
     },
     $imgAdd(pos, $file) {
       const imgData = new FormData()
