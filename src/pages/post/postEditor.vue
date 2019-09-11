@@ -193,6 +193,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .main
+  box-sizing border-box
   display block
   height 100%
   width 100%

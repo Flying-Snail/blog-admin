@@ -6,6 +6,7 @@ import PostEditor from './pages/post/postEditor'
 import Preview from './pages/post/preview'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
+import Charts from './pages/Charts'
 
 export default new VueRouter({
   routes: [
@@ -15,7 +16,7 @@ export default new VueRouter({
       children: [
         {
           path: '/',
-          component: Introduce,
+          component: PostList,
           meta: {
             needLogin: true,
             keepAlive: false,
@@ -64,6 +65,14 @@ export default new VueRouter({
         {
           path: '/userList',
           component: UserList,
+          meta: {
+            needLogin: true,
+            keepAlive: false
+          }
+        },
+        {
+          path: '/charts',
+          component: Charts,
           meta: {
             needLogin: true,
             keepAlive: false

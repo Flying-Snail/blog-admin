@@ -7,12 +7,26 @@ import router from "./router"
 import Axios from 'axios'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import echarts from "echarts"
+
+Axios.interceptors.request.use(
+  config => {
+    config.headers.Authorization = window.localStorage.getItem('token')
+      ? window.localStorage.getItem('token')
+      : ''
+    return config
+  },
+  err => {
+    return Promise.reject(err)
+  }
+)
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(mavonEditor)
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios
+Vue.prototype.$echarts = echarts
 
 router.beforeEach((to, from, next) => {
   if (!to.meta.needLogin) return next()
@@ -25,9 +39,6 @@ router.beforeEach((to, from, next) => {
     query: { redirect: to.fullPath }
   })
 })
-
-const instance = Axios.create()
-instance.defaults.headers.common['Authorization'] = window.localStorage.getItem('token')
 
 new Vue({
   render: h => h(App),
